@@ -17,6 +17,7 @@ OBJ_TYPE_CHOICES = (
         ('virtualchassis', 'Virtual Chassis'),
         ('cable', 'Cables'),
         ('powerfeed', 'Power Feeds'),
+        ('inventoryitem', 'Inventory Items'),
     )),
     ('IPAM', (
         ('vrf', 'VRFs'),

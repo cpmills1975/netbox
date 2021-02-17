@@ -7,12 +7,12 @@ from circuits.models import Circuit, Provider
 from circuits.tables import CircuitTable, ProviderTable
 from dcim.filters import (
     CableFilterSet, DeviceFilterSet, DeviceTypeFilterSet, PowerFeedFilterSet, RackFilterSet, RackGroupFilterSet,
-    SiteFilterSet, VirtualChassisFilterSet,
+    SiteFilterSet, VirtualChassisFilterSet, InventoryItemFilterSet
 )
-from dcim.models import Cable, Device, DeviceType, PowerFeed, Rack, RackGroup, Site, VirtualChassis
+from dcim.models import Cable, Device, DeviceType, PowerFeed, Rack, RackGroup, Site, VirtualChassis, InventoryItem
 from dcim.tables import (
     CableTable, DeviceTable, DeviceTypeTable, PowerFeedTable, RackTable, RackGroupTable, SiteTable,
-    VirtualChassisTable,
+    VirtualChassisTable, InventoryItemTable
 )
 from ipam.filters import AggregateFilterSet, IPAddressFilterSet, PrefixFilterSet, VLANFilterSet, VRFFilterSet
 from ipam.models import Aggregate, IPAddress, Prefix, VLAN, VRF
@@ -107,6 +107,12 @@ SEARCH_TYPES = OrderedDict((
         'filterset': PowerFeedFilterSet,
         'table': PowerFeedTable,
         'url': 'dcim:powerfeed_list',
+    }),
+    ('inventoryitem', {
+        'queryset': InventoryItem.objects.all(),
+        'filterset': InventoryItemFilterSet,
+        'table': InventoryItemTable,
+        'url': 'dcim:inventoryitem_list',
     }),
     # Virtualization
     ('cluster', {
