@@ -1,6 +1,6 @@
 from django import forms
 
-from utilities.forms import BootstrapMixin
+from utilities.forms import BootstrapMixin, StaticSelect2Multiple
 
 OBJ_TYPE_CHOICES = (
     ('', 'All Objects'),
@@ -43,6 +43,7 @@ class SearchForm(BootstrapMixin, forms.Form):
     q = forms.CharField(
         label='Search'
     )
-    obj_type = forms.ChoiceField(
+    obj_type = forms.MultipleChoiceField(
+        widget=StaticSelect2Multiple(attrs={'data-placeholder': 'All Objects'}),
         choices=OBJ_TYPE_CHOICES, required=False, label='Type'
     )
