@@ -12,6 +12,9 @@ from markdown import markdown
 
 from utilities.forms import TableConfigForm
 from utilities.utils import foreground_color
+from utilities.search_defaults import get_search_type_preference
+
+from netbox.views import SearchForm
 
 register = template.Library()
 
@@ -289,4 +292,12 @@ def table_config_form(table, table_name=None):
     return {
         'table_name': table_name or table.__class__.__name__,
         'table_config_form': TableConfigForm(table=table),
+    }
+
+@register.inclusion_tag('utilities/templatetags/quick_search_form.html', takes_context=True)
+def quick_search_form(context):
+
+    request = context['request']
+    return {
+        'quick_search_form': SearchForm(initial={'obj_type': get_search_type_preference(request)})
     }

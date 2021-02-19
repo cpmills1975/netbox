@@ -563,16 +563,7 @@
                     {% endif %}
                 {% endif %}
             </ul>
-            <form action="{% url 'search' %}" method="get" class="navbar-form navbar-right" id="navbar_search" role="search">
-                <div class="input-group">
-                    <input type="text" name="q" class="form-control" placeholder="Search">
-                    <span class="input-group-btn">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="mdi mdi-magnify"></i>
-                        </button>
-                    </span>
-                </div>
-            </form>
+            {% quick_search_form %}
         </div>
     </div>
 </nav>

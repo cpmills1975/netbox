@@ -1,8 +1,6 @@
 import platform
 import sys
 
-import logging
-
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import F
@@ -15,6 +13,8 @@ from django.views.decorators.csrf import requires_csrf_token
 from django.views.defaults import ERROR_500_TEMPLATE_NAME
 from django.views.generic import View
 from packaging import version
+
+from utilities.search_defaults import get_search_type_preference, set_search_type_preference
 
 from circuits.models import Circuit, Provider
 from dcim.models import (
@@ -106,14 +106,13 @@ class HomeView(View):
                     }
 
         return render(request, self.template_name, {
-            'search_form': SearchForm(),
+            'search_form': SearchForm(initial={'obj_type': get_search_type_preference(request)}),
             'stats': stats,
             'report_results': report_results,
             'changelog': changelog[:15],
             'new_release': new_release,
         })
 
-logger = logging.getLogger(__name__)
 
 class SearchView(View):
 
@@ -122,7 +121,7 @@ class SearchView(View):
         # No query
         if 'q' not in request.GET:
             return render(request, 'search.html', {
-                'form': SearchForm(),
+                'form': SearchForm(initial={'obj_type': get_search_type_preference(request)}),
             })
 
         form = SearchForm(request.GET)
@@ -130,20 +129,20 @@ class SearchView(View):
 
         if form.is_valid():
 
-            logger.info('Form is valid')
-
-            if form.cleaned_data['obj_type'] and type(form.cleaned_data['obj_type']) == list:
-
-                logger.info(f"obj_type is list: {form.cleaned_data['obj_type']}")
-
-                # Searching for a single type of object
+            if form.cleaned_data['obj_type']:
+                # List of object types to search is included in the request
                 obj_types = form.cleaned_data['obj_type']
+
+                # Save the obj_types as the search_type_preference
+                set_search_type_preference(request, obj_types)
+
             else:
                 # Searching all object types
-                logger.info(f"obj_type is unset")
                 obj_types = SEARCH_TYPES.keys()
 
-            logger.info(f"obj_types is {obj_types}")
+                # Save a blank search_type_preference
+                set_search_type_preference(request, [])
+
             for obj_type in obj_types:
 
                 queryset = SEARCH_TYPES[obj_type]['queryset'].restrict(request.user, 'view')
@@ -162,8 +161,6 @@ class SearchView(View):
                         'table': table,
                         'url': f"{reverse(url)}?q={form.cleaned_data.get('q')}"
                     })
-
-                logger.info(f"results: {results}")
 
         return render(request, 'search.html', {
             'form': form,

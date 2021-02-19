@@ -1,9 +1,36 @@
 <div class="row" style="padding-bottom: 20px">
-    <div class="col-md-12 text-center">
-        <form action="{% url 'search' %}" method="get" class="form-inline">
-            <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Search" id="id_q" class="form-control" style="width: 350px" />
-            {{ search_form.obj_type }}
-            <button type="submit" class="btn btn-primary">Search</button>
+    <div class="col-md-4 col-md-offset-4">
+        <form action="{% url 'search' %}" method="get" class="form">
+
+            {% for field in search_form %}
+
+                {% if field.name == "q" %}
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" name="q" class="form-control" aria-label="Search string" placeholder="Search">
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-primary">
+                                    <span class="mdi mdi-magnify" aria-hidden="true"> Search </span>
+                                </button>
+                                <a href="#AdvancedSearch" class="btn btn-primary" data-toggle="collapse" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle advanced search</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if field.name == "obj_type" %}
+                    <div class="form-group collapse" id="AdvancedSearch" aria-expanded="false">
+                        <label for="id_obj_type">Object types</label>
+                        {{ field }}
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+
         </form>
     </div>
 </div>
+

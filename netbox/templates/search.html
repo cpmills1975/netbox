@@ -6,7 +6,6 @@
 
 {% block content %}
     {% if request.GET.q %}
-        {% include 'search_form.html' with search_form=form %}
         {% if results %}
             <div class="row">
                 <div class="col-md-10">
@@ -24,7 +23,44 @@
                     <div class="clearfix"></div>
                     {% endfor %}
                 </div>
-                <div class="col-md-2" style="padding-top: 20px;">
+                <div class="col-md-2" style="padding-top: 4em;">
+                    <form action="{% url 'search' %}" method="get" class="form">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span class="mdi mdi-magnify" aria-hidden="true"></span>
+                                <strong>Search</strong>
+                            </div>
+                            <div class="panel-body">
+                                {% for field in form %}
+                                    <div class="form-group">
+                                        {% if field.name == "q" %}
+                                            <div class="input-group">
+                                                <input type="text" name="q" class="form-control" placeholder="Search" {% if request.GET.q %}value="{{ request.GET.q }}" {% endif %}/>
+                                                <span class="input-group-btn">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <span class="mdi mdi-magnify" aria-hidden="true"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        {% elif field|widget_type == 'checkboxinput' %}
+                                            <label for="{{ field.id_for_label }}">{{ field }} {{ field.label }}</label>
+                                        {% else %}
+                                            {{ field.label_tag }}
+                                            {{ field }}
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                                <div class="text-right noprint">
+                                    <button type="submit" class="btn btn-primary">
+                                        <span class="mdi mdi-magnify" aria-hidden="true"></span> Search
+                                    </button>
+                                    <a href="." class="btn btn-default">
+                                        <span class="mdi mdi-close-thick" aria-hidden="true"></span> Clear
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <strong>Search Results</strong>
@@ -41,6 +77,7 @@
                 </div>
             </div>
         {% else %}
+            {% include 'search_form.html' with search_form=form %}
             <h3 class="text-muted text-center">No results found</h3>
         {% endif %}
     {% else %}

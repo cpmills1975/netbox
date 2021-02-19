@@ -1,0 +1,22 @@
+<form action="{% url 'search' %}" method="get" class="navbar-form navbar-right" id="navbar_search" role="search">
+    <div class="input-group">
+
+        {% for field in quick_search_form %}
+            {% if field.name == "q" %}
+                <input type="text" name="q" class="form-control" placeholder="Quick Search">
+            {% endif %}
+
+            {% if field.name == "obj_type" %}
+                <div style="display: none">
+                    {{ field }}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary">
+                <i class="mdi mdi-magnify"></i>
+            </button>
+        </span>
+    </div>
+</form>
