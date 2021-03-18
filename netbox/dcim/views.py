@@ -1134,7 +1134,7 @@ class DeviceInterfacesView(generic.ObjectView):
             'paginator_class': EnhancedPaginator,
             'per_page': get_paginate_count(request)
         }
-        RequestConfig(request, paginate).configure(table)
+        RequestConfig(request, paginate).configure(interface_table)
 
         if request.user.has_perm('dcim.change_interface') or request.user.has_perm('dcim.delete_interface'):
             interface_table.columns.show('pk')
