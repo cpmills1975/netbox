@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.views.generic import View
+from django_tables2 import RequestConfig
 
 from circuits.models import Circuit
 from extras.views import ObjectChangeLogView, ObjectConfigContextView
