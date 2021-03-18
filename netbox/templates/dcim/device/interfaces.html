@@ -43,6 +43,7 @@
                         </a>
                     </div>
                 {% endif %}
+                {% include 'inc/paginator.html' with paginator=table.paginator page=table.page %}
                 <div class="clearfix"></div>
              </div>
         </div>
