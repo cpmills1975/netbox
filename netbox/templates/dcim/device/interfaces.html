@@ -11,6 +11,7 @@
             <div class="panel-body">
                 <div class="checkbox-inline">
                     <label for="select_all">
+                        <input type="hidden" name="device" value="{% object.pk %}" />
                         <input type="checkbox" id="select_all" name="_all" />
                         Select <strong>all {{ interface_table.rows|length }} {{ interface_table.data.verbose_name_plural }}</strong> matching query
                     </label>
